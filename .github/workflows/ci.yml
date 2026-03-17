@@ -31,7 +31,8 @@ jobs:
           cache: maven
 
       - name: Run tests
-        run: ./mvnw test
+        working-directory: library-api
+        run: chmod +x mvnw && ./mvnw -B test
         env:
           SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/library_test
           SPRING_DATASOURCE_USERNAME: user
