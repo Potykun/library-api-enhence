@@ -30,6 +30,9 @@ jobs:
           distribution: "temurin"
           cache: maven
 
+      - name: Wait for Postgres
+        run: sleep 10
+
       - name: Run tests
         working-directory: library-api
         run: chmod +x mvnw && ./mvnw -B test
@@ -40,3 +43,4 @@ jobs:
 
       - name: Build
         run: ./mvnw package -DskipTests
+        working-directory: library-api
