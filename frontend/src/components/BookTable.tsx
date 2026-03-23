@@ -1,4 +1,3 @@
-import { Alert, Button, Empty, Table, Tag } from "antd"
 import type { BookResponseDto } from "../types/book"
 
 interface Props {
@@ -13,73 +12,86 @@ interface Props {
 }
 
 export const BooksTable = ({
-	books,
-	isLoading,
-	isError,
-	onDelete,
-	searchMode,
-	totalPages,
-	page,
-	onPageChange,
+	books, isLoading, isError, onDelete,
+	searchMode, totalPages, page, onPageChange,
 }: Props) => {
 	if (isError)
 		return (
-			<Alert
-				type="error"
-				message={searchMode === "id" ? "Book with this ID not found" : "Loading error"}
-			/>
+			<div className="alert alert--error">
+				{searchMode === "id" ? "Book with this ID not found" : "Loading error"}
+			</div>
 		)
 
-	const columns = [
-		{ title: "ID", dataIndex: "id", width: 60 },
-		{
-			title: "Title",
-			dataIndex: "title",
-			render: (t: string) => <span style={{ fontWeight: 500 }}>{t}</span>,
-		},
-		{ title: "Author", dataIndex: "author", render: (a: string) => <Tag color="purple">{a}</Tag> },
-		{ title: "Year", dataIndex: "publicationYear", width: 70 },
-		{
-			title: "",
-			width: 90,
-			render: (_: any, record: BookResponseDto) => (
-				<Button
-					danger
-					size="small"
-					onClick={() => onDelete(record.id)}
-				>
-					Delete
-				</Button>
-			),
-		},
-	]
+	if (isLoading)
+		return (
+			<div className="table-state">
+				<span className="spinner" />
+				Loading…
+			</div>
+		)
+
+	if (books.length === 0)
+		return <div className="table-state table-state--empty">No books found</div>
 
 	return (
-		<>
-			<Table
-				className="book-table-container"
-				dataSource={books}
-				columns={columns}
-				rowKey="id"
-				loading={isLoading}
-				locale={{ emptyText: <Empty description="No books found" /> }}
-				pagination={
-					searchMode !== "id"
-						? {
-								current: page + 1,
-								total: totalPages * 10,
-								pageSize: 10,
-								onChange: (p) => onPageChange(p - 1),
-								showSizeChanger: false,
-							}
-						: false
-				}
-			/>
-			{books.length > 0 && searchMode === "id" && (
-				<div style={{ fontSize: 12, color: "var(--color-text-secondary)", marginTop: 8 }}>
-					Found 1 book · exact match by ID
+		<div className="table-wrap">
+			<table className="book-table">
+				<thead>
+					<tr>
+						<th className="col-num">#</th>
+						<th>Title</th>
+						<th>Author</th>
+						<th className="col-year">Year</th>
+						<th className="col-id">ID</th>
+						<th className="col-action" />
+					</tr>
+				</thead>
+				<tbody>
+					{books.map((b, i) => (
+						<tr key={b.id} className="book-row">
+							<td className="col-num">{page * 10 + i + 1}</td>
+							<td className="col-title">{b.title}</td>
+							<td><span className="author-tag">{b.author}</span></td>
+							<td className="col-year">{b.publicationYear}</td>
+							<td className="col-id">{b.id}</td>
+							<td className="col-action">
+								<button
+									className="btn btn--danger btn--sm"
+									onClick={() => onDelete(b.id)}
+								>
+									Delete
+								</button>
+							</td>
+						</tr>
+					))}
+				</tbody>
+			</table>
+
+			{searchMode !== "id" && totalPages > 1 && (
+				<div className="pagination">
+					<button
+						className="btn btn--ghost btn--sm"
+						disabled={page === 0}
+						onClick={() => onPageChange(page - 1)}
+					>
+						‹ Prev
+					</button>
+					<span className="pagination__info">
+						Page {page + 1} / {totalPages}
+					</span>
+					<button
+						className="btn btn--ghost btn--sm"
+						disabled={page >= totalPages - 1}
+						onClick={() => onPageChange(page + 1)}
+					>
+						Next ›
+					</button>
 				</div>
 			)}
-		</>
+
+			{books.length > 0 && searchMode === "id" && (
+				<p className="table-hint">Found 1 book · exact match by ID</p>
+			)}
+		</div>
 	)
 }

@@ -17,21 +17,16 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-      
-        Book book1 = new Book();
-        book1.setTitle("Harry Potter");
-        book1.setAuthor("Author1");
-        book1.setPublicationYear(1997);
-        book1.setDeleted(false);
-        repo.save(book1);
-
-    
-        Book book2 = new Book();
-        book2.setTitle("Lord of the Rings");
-        book2.setAuthor("Author2");
-        book2.setPublicationYear(1954);
-        book2.setDeleted(false);
-        repo.save(book2);
-
+        if (repo.count() == 0) {
+            repo.saveAll(java.util.List.of(
+                new Book(null, "The Lord of the Rings", "J.R.R. Tolkien", 1954, false),
+                new Book(null, "1984", "George Orwell", 1949, false),
+                new Book(null, "Harry Potter and the Sorcerer's Stone", "J.K. Rowling", 1997, false),
+                new Book(null, "To Kill a Mockingbird", "Harper Lee", 1960, false),
+                new Book(null, "The Great Gatsby", "F. Scott Fitzgerald", 1925, false),
+                new Book(null, "Pride and Prejudice", "Jane Austen", 1813, false),
+                new Book(null, "Dune", "Frank Herbert", 1965, false)
+            ));
+        }
     }
 }
