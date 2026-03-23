@@ -3,7 +3,7 @@
 > A full-stack book catalog management system built with **Spring Boot 3**, **React 19**, and **PostgreSQL 16**.  
 > Supports full CRUD, advanced multi-field search, server-side pagination, and soft deletion.
 
-**Live Demo:** _[https://your-app.onrender.com](https://your-app.onrender.com)_ ← _replace with your Render URL_
+**Live Demo:** https://library-api-enhence.onrender.com/
 
 ---
 
@@ -326,9 +326,9 @@ The project is deployed on **[Render](https://render.com)**:
 | Frontend (Nginx + React build) | Web Service (Docker) |
 | Database | Managed PostgreSQL |
 
-**Live URL:** _[https://your-app.onrender.com](https://your-app.onrender.com)_ ← _replace with your Render URL_
+**Live URL:** https://library-api-enhence.onrender.com/
 
-> **Note:** On the free Render tier, the backend web service spins down after 15 minutes of inactivity. The first request after sleep may take ~30 seconds to respond.
+> **Note:** On the free Render tier, the backend web service spins down after 15 minutes of inactivity. The first request after sleep may take ~630 seconds to respond.
 
 ---
 
